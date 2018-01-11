@@ -6,6 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Client {
@@ -14,22 +19,22 @@ public class Client {
     @GeneratedValue
     private Long id;
 
+  @NotNull
     private String lastName;
-
+  @NotNull
     private String firstName;
+  @Email
+  private String email;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "client")
-    private List<Email> emails;
+    private List<Interaction> interactions;
+
+
+    @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<EmailAddress> emailAddresses;
 
-    public List<Email> getEmails() {
-        return emails;
-    }
-
-    public void setEmails(List<Email> emails) {
-        this.emails = emails;
-    }
 
     public List<EmailAddress> getEmailAddresses() {
         return emailAddresses;
@@ -62,5 +67,21 @@ public class Client {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+
+    public List<Interaction> getInteractions() {
+        return interactions;
+    }
+
+    public void setInteractions(List<Interaction> interactions) {
+        this.interactions = interactions;
+    }
+
+    public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
 }
