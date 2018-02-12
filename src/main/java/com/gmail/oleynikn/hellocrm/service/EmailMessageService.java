@@ -2,19 +2,21 @@ package com.gmail.oleynikn.hellocrm.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gmail.oleynikn.hellocrm.model.EmailMessage;
-import com.gmail.oleynikn.hellocrm.repository.EmailMessageJpaRepository;
+import com.gmail.oleynikn.hellocrm.repository.EmailMessageRepository;
 
 @Service
 public class EmailMessageService {
 
-    private EmailMessageJpaRepository emailRepository;
+    private EmailMessageRepository emailRepository;
 
     @Autowired
-    public void setEmailService(EmailMessageJpaRepository emailRepository) {
+    public void setEmailService(EmailMessageRepository emailRepository) {
         this.emailRepository = emailRepository;
     }
 
@@ -23,6 +25,7 @@ public class EmailMessageService {
         return emails;
     }
 
+    @Transactional
     public EmailMessage save(EmailMessage email) {
         return emailRepository.save(email);
 

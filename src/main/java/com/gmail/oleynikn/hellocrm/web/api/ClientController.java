@@ -2,8 +2,6 @@ package com.gmail.oleynikn.hellocrm.web.api;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +29,7 @@ public class ClientController {
   }
 
     @GetMapping
-    public List<Client> getAll(HttpServletResponse response) {
-    response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+    public List<Client> getAll() {
         return clientService.findAll();
   }
 
@@ -58,7 +55,12 @@ public class ClientController {
   }
 
     @GetMapping("/{id}/emails")
-    public List<EmailMessage> getClientEmails(@PathVariable Long id, HttpServletResponse response) {
+    public List<EmailMessage> getClientEmails(@PathVariable Long id) {
         return emailService.findByClientId(id);
+    }
+
+    @GetMapping("/{firstName}/{lastName}")
+    public List<Client> getByFirsOrLasttName(@PathVariable String firstName, @PathVariable String lastName) {
+        return clientService.findByFirsOrLasttName(firstName, lastName);
     }
 }

@@ -18,6 +18,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @DiscriminatorValue("EMAIL")
 public class EmailMessage extends Interaction {
 
+    // TODO: add MessageID unique
+
     @JsonIgnore
     @Column(columnDefinition = "blob")
     private MimeMessage message;
@@ -31,7 +33,7 @@ public class EmailMessage extends Interaction {
     }
 
     @JsonGetter("body")
-    public String body() throws MessagingException, IOException {
+    public String getText() throws MessagingException, IOException {
         if (message != null) {
             return getText(message);
         }
@@ -46,7 +48,7 @@ public class EmailMessage extends Interaction {
         return null;
     }
 
-    public String getText(Part p) throws MessagingException, IOException {
+    private String getText(Part p) throws MessagingException, IOException {
 
         if (p.isMimeType("text/*")) {
             return (String) p.getContent();

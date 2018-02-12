@@ -1,9 +1,9 @@
 alter sequence hibernate_sequence restart with 1000;
-INSERT INTO client (id , first_name , last_name ) VALUES
-   (1, 'john', 'doe'),
-   (2, 'john', 'doe jr.'),
-   (3, 'john', 'three'),
-   (4, 'jack', 'freeman');
+INSERT INTO client (id , first_name , last_name, email ) VALUES
+   (1, 'john', 'doe',null),
+   (2, 'john', 'doe jr.',null),
+   (3, 'john', 'three','support@i.ua'),
+   (4, 'jack', 'freeman',null);
 
 INSERT INTO email_address (id, address, client_id) VALUES
     (1, 'ADMIN@test.com', 1),

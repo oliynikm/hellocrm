@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.gmail.oleynikn.hellocrm.model.Interaction;
 import com.gmail.oleynikn.hellocrm.service.InteractionService;
+import com.gmail.oleynikn.hellocrm.web.api.jsonview.Views;
 
 @RestController
 @RequestMapping("/api/interactions")
@@ -27,6 +29,7 @@ public class InteractionController {
     }
 
     @GetMapping
+    @JsonView(Views.ListView.class)
     public List<Interaction> getAll(HttpServletResponse response) {
         return interactionService.findAll();
     }

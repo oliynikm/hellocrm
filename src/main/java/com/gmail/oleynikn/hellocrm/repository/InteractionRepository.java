@@ -9,7 +9,7 @@ import com.gmail.oleynikn.hellocrm.model.Interaction;
 
 
 @Repository
-public interface InteractionJpaRepository extends JpaRepository<Interaction, Long> {
+public interface InteractionRepository extends JpaRepository<Interaction, Long> {
 
     List<Interaction> findByClientId(Long id);
 

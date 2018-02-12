@@ -6,15 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gmail.oleynikn.hellocrm.model.Client;
-import com.gmail.oleynikn.hellocrm.repository.ClientJpaRepository;
+import com.gmail.oleynikn.hellocrm.repository.ClientRepository;
 
 @Service
 public class ClientService {
 
-    private ClientJpaRepository clientRepository;
+    private ClientRepository clientRepository;
 
     @Autowired
-    public void setEmailService(ClientJpaRepository clientRepository) {
+    public void setEmailService(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
     }
 
@@ -34,5 +34,13 @@ public class ClientService {
         return clientRepository.findOne(id);
     }
 
+    public List<Client> findByFirsOrLasttName(String firstName, String lastName) {
+        return clientRepository.findByFirstNameOrLastNameAllIgnoreCase(firstName, lastName);
+    }
+
+    public List<Client> findByEmail(String address) {
+        // TODO Auto-generated method stub
+        return clientRepository.findByEmail(address);
+    }
 
 }

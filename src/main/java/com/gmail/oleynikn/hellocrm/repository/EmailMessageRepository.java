@@ -9,7 +9,7 @@ import com.gmail.oleynikn.hellocrm.model.EmailMessage;
 
 
 @Repository
-public interface EmailMessageJpaRepository extends JpaRepository<EmailMessage, Long> {
+public interface EmailMessageRepository extends JpaRepository<EmailMessage, Long> {
 
     List<EmailMessage> findByClientId(Long id);
 

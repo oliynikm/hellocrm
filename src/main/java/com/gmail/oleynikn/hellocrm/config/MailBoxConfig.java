@@ -30,7 +30,7 @@ public class MailBoxConfig {
                                 env.getProperty("mail.password"));
                     }
                 });
-        emailSession.setDebug(true);
+        emailSession.setDebug(false);
 
         return emailSession;
     }

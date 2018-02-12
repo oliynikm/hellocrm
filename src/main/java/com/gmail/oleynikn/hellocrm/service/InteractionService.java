@@ -6,15 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gmail.oleynikn.hellocrm.model.Interaction;
-import com.gmail.oleynikn.hellocrm.repository.InteractionJpaRepository;
+import com.gmail.oleynikn.hellocrm.repository.InteractionRepository;
 
 @Service
 public class InteractionService {
 
-    private InteractionJpaRepository interactionRepository;
+    private InteractionRepository interactionRepository;
 
     @Autowired
-    public void setEmailService(InteractionJpaRepository interactionRepository) {
+    public void setEmailService(InteractionRepository interactionRepository) {
         this.interactionRepository = interactionRepository;
     }
 
