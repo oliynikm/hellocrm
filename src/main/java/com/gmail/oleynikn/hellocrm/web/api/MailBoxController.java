@@ -22,8 +22,31 @@ public class MailBoxController {
     }
 
     @GetMapping
-    public void refresh(HttpServletResponse response) throws IOException {
-        System.out.println("refreshing...");
+    public Response refresh() throws IOException {
         mailBoxService.receiveAll();
+        // TODO: return count of new messages
+        return new Response();
     }
+
+}
+
+class Response {
+    String message = "ok";
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+    String error = "0";
 }

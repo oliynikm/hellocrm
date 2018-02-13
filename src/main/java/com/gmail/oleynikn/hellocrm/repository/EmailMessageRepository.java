@@ -13,6 +13,8 @@ public interface EmailMessageRepository extends JpaRepository<EmailMessage, Long
 
     List<EmailMessage> findByClientId(Long id);
 
+    List<EmailMessage> findByState(String state);
+
     Long deleteByClientId(Long id);
 
 }

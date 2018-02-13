@@ -28,11 +28,14 @@ public class EmailMessageService {
     @Transactional
     public EmailMessage save(EmailMessage email) {
         return emailRepository.save(email);
-
     }
 
     public List<EmailMessage> findByClientId(Long id) {
         return emailRepository.findByClientId(id);
+    }
+
+    public List<EmailMessage> findByState(String state) {
+        return emailRepository.findByState(state);
     }
 
     public void deleteById(long id) {

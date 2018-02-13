@@ -47,8 +47,13 @@ public class EmailMessageController {
     }
 
     @GetMapping("/unassigned")
-    public List<EmailMessage> getEmailsWithoutClient(HttpServletResponse response) {
+    public List<EmailMessage> getEmailsWithoutClient() {
         return emailService.findByClientId(null);
+    }
+
+    @GetMapping("/unread")
+    public List<EmailMessage> getEmailsNew() {
+        return emailService.findByState("New");
     }
 
 }

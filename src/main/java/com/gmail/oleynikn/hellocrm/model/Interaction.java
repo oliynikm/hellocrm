@@ -42,6 +42,9 @@ public class Interaction {
     @JsonView(Views.ListView.class)
     private String description;
 
+    @JsonView(Views.ListView.class)
+    private String state;
+
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
@@ -70,6 +73,14 @@ public class Interaction {
         this.interactionType = interactionType;
     }
 
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public Client getClient() {
         return client;
