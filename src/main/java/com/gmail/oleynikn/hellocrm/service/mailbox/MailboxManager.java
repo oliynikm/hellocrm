@@ -1,6 +1,7 @@
 package com.gmail.oleynikn.hellocrm.service.mailbox;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.mail.Flags;
@@ -56,10 +57,11 @@ public class MailboxManager {
 
             Message[] unreadMessages = folder.search(
                         new FlagTerm(new Flags(Flags.Flag.SEEN), false));
-
+                List<EmailMessage> emails = new ArrayList<>();
             for (Message message : unreadMessages) {
-                saveReceivedMessage(message);
+                    emails.add(toEmailMessage(message));
                 }
+                emailService.saveAll(emails);
             }
 
             folder.close(true);
@@ -69,11 +71,11 @@ public class MailboxManager {
         }
     }
 
-    protected void saveReceivedMessage(Message message) throws MessagingException, IOException {
+    protected EmailMessage toEmailMessage(Message message) throws MessagingException, IOException {
+        message.setFlag(Flags.Flag.SEEN, true);
         EmailMessage emailMessage = MessageConverter.convertToEmailMessage(message);
         emailMessage.setClient(findClientbyEmail(((InternetAddress) emailMessage.getSender()).getAddress()));
-        emailService.save(emailMessage);
-        message.setFlag(Flags.Flag.SEEN, true);
+        return emailMessage;
     }
 
     private Client findClientbyEmail(String address) {

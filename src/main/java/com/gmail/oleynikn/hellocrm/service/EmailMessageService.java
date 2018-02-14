@@ -1,5 +1,6 @@
 package com.gmail.oleynikn.hellocrm.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -28,6 +29,11 @@ public class EmailMessageService {
     @Transactional
     public EmailMessage save(EmailMessage email) {
         return emailRepository.save(email);
+    }
+
+    @Transactional
+    public List<EmailMessage> saveAll(Iterable<EmailMessage> emails) {
+        return emailRepository.save(emails);
     }
 
     public List<EmailMessage> findByClientId(Long id) {
