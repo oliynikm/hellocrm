@@ -8,20 +8,23 @@ import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gmail.oleynikn.hellocrm.service.MimeMessageConverter;
 
 @Entity
 @DiscriminatorValue("EMAIL")
 public class EmailMessage extends Interaction {
 
     // TODO: add MessageID unique
-
+    // TODO: check why MimeMessage different in insert and update statements
     @JsonIgnore
     @Column(columnDefinition = "blob")
+    @Convert(converter = MimeMessageConverter.class)
     private MimeMessage message;
 
     public MimeMessage getMessage() {

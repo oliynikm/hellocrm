@@ -11,6 +11,7 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.mail.search.FlagTerm;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,8 +74,11 @@ public class MailboxManager {
 
     protected EmailMessage toEmailMessage(Message message) throws MessagingException, IOException {
         message.setFlag(Flags.Flag.SEEN, true);
-        EmailMessage emailMessage = MessageConverter.convertToEmailMessage(message);
-        emailMessage.setClient(findClientbyEmail(((InternetAddress) emailMessage.getSender()).getAddress()));
+        EmailMessage emailMessage = MessageConverter.convertToEmailMessage((MimeMessage) message);
+        emailMessage.setClient(
+                findClientbyEmail(
+                        ((InternetAddress) emailMessage.getSender())
+                                .getAddress()));
         return emailMessage;
     }
 

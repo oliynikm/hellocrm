@@ -9,19 +9,22 @@ import javax.mail.internet.MimeMessage;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-@Converter(autoApply = true)
+@Converter
 public class MimeMessageConverter implements AttributeConverter<MimeMessage, byte[]> {
 
     @Override
     public byte[] convertToDatabaseColumn(MimeMessage message) {
         ByteArrayOutputStream tempMessageStream = new ByteArrayOutputStream();
-        try {
-            message.writeTo(tempMessageStream);
-        } catch (IOException | MessagingException e) {
-            // TODO: log and throw custom exception
-            throw new RuntimeException(e);
+        if (null != message) {
+            try {
+                message.writeTo(tempMessageStream);
+            } catch (IOException | MessagingException e) {
+                // TODO: log and throw custom exception
+                throw new RuntimeException(e);
+            }
         }
-        return tempMessageStream.toByteArray();
+
+         return tempMessageStream.toByteArray();
     }
 
     @Override
