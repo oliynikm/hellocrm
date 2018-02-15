@@ -1,11 +1,8 @@
 package com.gmail.oleynikn.hellocrm.service.mailbox;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.mail.Address;
 import javax.mail.Message;
@@ -71,30 +68,13 @@ public class MailboxManagerTest {
     public void messageConvert() throws MessagingException, IOException {
 
         assertEquals(testEmailAddress,
-                ((InternetAddress) MessageConverter.convertToEmailMessage(message).getSender()).getAddress());
+                ((InternetAddress) EmailMessageFactory.createFrom((MimeMessage) message).getSender())
+                        .getAddress());
         assertEquals(testSubject,
-                MessageConverter.convertToEmailMessage(message).getDescription());
+                EmailMessageFactory.createFrom((MimeMessage) message).getDescription());
         assertEquals(testText,
-                MessageConverter.convertToEmailMessage(message).getText());
+                EmailMessageFactory.createFrom((MimeMessage) message).getText());
     }
 
-    @Test
-    public void newMessageSave() throws MessagingException, IOException {
-        ArrayList<Client> clients = new ArrayList<Client>();
-        clients.add(client);
-        when(clientRepository.findByEmail(testEmailAddress)).thenReturn(clients);
 
-        MailboxManager mailboxManager = new MailboxManager(emailMessageService, clientService, mailboxSessionFactory);
-        mailboxManager.saveReceivedMessage(message);
-        verify(emailRepository).save(emailArgument.capture());
-        assertEquals(testEmailAddress, ((InternetAddress) emailArgument.getValue().getSender()).getAddress());
-        assertEquals(testSubject, emailArgument.getValue().getDescription());
-        assertEquals(testText, emailArgument.getValue().getText());
-        assertEquals(message, emailArgument.getValue().getMessage());
-        assertEquals(client, emailArgument.getValue().getClient());
-
-
-        verify(clientRepository).findByEmail(clientEmailArgument.capture());
-        assertEquals(testEmailAddress, clientEmailArgument.getValue());
-    }
 }

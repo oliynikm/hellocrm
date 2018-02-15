@@ -11,7 +11,6 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.mail.search.FlagTerm;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,6 @@ public class MailboxManager {
         this.clientService = clientService;
     }
 
-
     public void receiveAll() {
         // TODO: make it thread safe
         for (Session session : sessionFactory.getSessions()) {
@@ -56,15 +54,16 @@ public class MailboxManager {
 
             if (folder.getUnreadMessageCount() > 0) {
 
-            Message[] unreadMessages = folder.search(
+                Message[] unreadMessages = folder.search(
                         new FlagTerm(new Flags(Flags.Flag.SEEN), false));
+
                 List<EmailMessage> emails = new ArrayList<>();
-            for (Message message : unreadMessages) {
+
+                for (Message message : unreadMessages) {
                     emails.add(toEmailMessage(message));
                 }
                 emailService.saveAll(emails);
             }
-
             folder.close(true);
             store.close();
         } catch (MessagingException | IOException e) {
@@ -74,7 +73,7 @@ public class MailboxManager {
 
     protected EmailMessage toEmailMessage(Message message) throws MessagingException, IOException {
         message.setFlag(Flags.Flag.SEEN, true);
-        EmailMessage emailMessage = MessageConverter.convertToEmailMessage((MimeMessage) message);
+        EmailMessage emailMessage = EmailMessageFactory.createFrom(message);
         emailMessage.setClient(
                 findClientbyEmail(
                         ((InternetAddress) emailMessage.getSender())
@@ -83,13 +82,13 @@ public class MailboxManager {
     }
 
     private Client findClientbyEmail(String address) {
-        
-        List<Client> clients=clientService.findByEmail(address);
-        
-        if(clients.isEmpty()||clients.size()>1) {
-            return null; 
-        }else {
-        return clients.get(0);
+
+        List<Client> clients = clientService.findByEmail(address);
+
+        if (clients.isEmpty() || clients.size() > 1) {
+            return null;
+        } else {
+            return clients.get(0);
         }
     }
 }

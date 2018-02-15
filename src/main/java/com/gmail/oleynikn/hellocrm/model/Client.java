@@ -19,22 +19,20 @@ public class Client {
     @GeneratedValue
     private Long id;
 
-  @NotNull
+    @NotNull
     private String lastName;
-  @NotNull
+    @NotNull
     private String firstName;
-  @Email
-  private String email;
+    @Email
+    private String email;
 
     @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Interaction> interactions;
 
-
     @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<EmailAddress> emailAddresses;
-
 
     public List<EmailAddress> getEmailAddresses() {
         return emailAddresses;
@@ -77,11 +75,17 @@ public class Client {
     }
 
     public String getEmail() {
-    return email;
-  }
+        return email;
+    }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void updateFrom(Client source) {
+        this.email = source.getEmail();
+        this.firstName = source.getFirstName();
+        this.lastName = source.getLastName();
+    }
 
 }

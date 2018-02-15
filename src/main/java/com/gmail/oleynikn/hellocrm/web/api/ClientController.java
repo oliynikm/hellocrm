@@ -45,12 +45,13 @@ public class ClientController {
 
     @PostMapping("/{id}")
     public Client save(@RequestBody Client client) {
-    return clientService.save(client);
+        Client persistedClient = clientService.findOne(client.getId());
+        persistedClient.updateFrom(client);
+        return persistedClient;
     }
 
   @PostMapping
   public Client add(@RequestBody Client client) {
-    System.out.println(client.getFirstName());
     return clientService.save(client);
   }
 

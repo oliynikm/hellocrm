@@ -1,15 +1,18 @@
 package com.gmail.oleynikn.hellocrm.service.mailbox;
 
+import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import com.gmail.oleynikn.hellocrm.model.EmailMessage;
 
-public class MessageConverter {
+public class EmailMessageFactory {
 
-    // TODO: rename to avoid ambiguity
+    public static EmailMessage createFrom(Message message) {
+        return createFrom((MimeMessage) message);
+    }
 
-    public static EmailMessage convertToEmailMessage(MimeMessage message) {
+    public static EmailMessage createFrom(MimeMessage message) {
 
         EmailMessage email = new EmailMessage();
         try {

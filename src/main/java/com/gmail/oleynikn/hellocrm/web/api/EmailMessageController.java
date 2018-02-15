@@ -43,7 +43,9 @@ public class EmailMessageController {
 
     @PostMapping("/{id}")
     public EmailMessage save(@RequestBody EmailMessage message) {
-        return emailService.save(message);
+        EmailMessage persistedMessage = emailService.findOne(message.getId());
+        persistedMessage.updateFrom(message);
+        return persistedMessage;
     }
 
     @GetMapping("/unassigned")
@@ -54,6 +56,16 @@ public class EmailMessageController {
     @GetMapping("/unread")
     public List<EmailMessage> getEmailsNew() {
         return emailService.findByState("New");
+    }
+
+    @GetMapping("/unassigned/count")
+    public Long countEmailsWithoutClient() {
+        return emailService.countByClientId(null);
+    }
+
+    @GetMapping("/unread/count")
+    public Long countEmailsNew() {
+        return emailService.countByState("New");
     }
 
 }

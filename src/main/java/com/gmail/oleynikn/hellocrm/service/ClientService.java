@@ -39,7 +39,6 @@ public class ClientService {
     }
 
     public List<Client> findByEmail(String address) {
-        // TODO Auto-generated method stub
         return clientRepository.findByEmail(address);
     }
 

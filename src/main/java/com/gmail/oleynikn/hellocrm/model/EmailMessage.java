@@ -89,4 +89,9 @@ public class EmailMessage extends Interaction {
         return null;
     }
 
+    public void updateFrom(EmailMessage source) {
+        this.setState(source.getState());
+        this.setClient(source.getClient());
+    }
+
 }

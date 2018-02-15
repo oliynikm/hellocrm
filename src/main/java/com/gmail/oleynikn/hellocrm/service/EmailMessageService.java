@@ -50,4 +50,12 @@ public class EmailMessageService {
     public EmailMessage findOne(long id) {
         return emailRepository.findOne(id);
     }
+
+    public Long countByState(String state) {
+        return emailRepository.countByState(state);
+    }
+
+    public Long countByClientId(Long clientId) {
+        return emailRepository.countByClientId(clientId);
+    }
 }
