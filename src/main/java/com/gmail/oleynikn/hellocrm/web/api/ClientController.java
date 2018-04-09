@@ -45,9 +45,7 @@ public class ClientController {
 
     @PostMapping("/{id}")
     public Client save(@RequestBody Client client) {
-        Client persistedClient = clientService.findOne(client.getId());
-        persistedClient.updateFrom(client);
-        return persistedClient;
+        return clientService.update(client);
     }
 
   @PostMapping

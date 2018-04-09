@@ -14,7 +14,7 @@ public class InteractionService {
     private InteractionRepository interactionRepository;
 
     @Autowired
-    public void setEmailService(InteractionRepository interactionRepository) {
+    public InteractionService(InteractionRepository interactionRepository) {
         this.interactionRepository = interactionRepository;
     }
 

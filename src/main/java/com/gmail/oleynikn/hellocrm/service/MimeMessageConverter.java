@@ -8,9 +8,16 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
+import javax.xml.bind.DatatypeConverter;
+
+import org.apache.log4j.Logger;
+
+import com.gmail.oleynikn.hellocrm.exceptions.MimeMessageConversionException;
 
 @Converter
 public class MimeMessageConverter implements AttributeConverter<MimeMessage, byte[]> {
+    private static final Logger LOG = Logger.getLogger(MimeMessageConverter.class.getName());
+
 
     @Override
     public byte[] convertToDatabaseColumn(MimeMessage message) {
@@ -19,12 +26,12 @@ public class MimeMessageConverter implements AttributeConverter<MimeMessage, byt
             try {
                 message.writeTo(tempMessageStream);
             } catch (IOException | MessagingException e) {
-                // TODO: log and throw custom exception
-                throw new RuntimeException(e);
+                String errorMessage = "Can`t convert Mime Message " + message + " to byte arraye";
+                LOG.error(errorMessage);
+                throw new MimeMessageConversionException(errorMessage, e);
             }
         }
-
-         return tempMessageStream.toByteArray();
+        return tempMessageStream.toByteArray();
     }
 
     @Override
@@ -33,8 +40,9 @@ public class MimeMessageConverter implements AttributeConverter<MimeMessage, byt
             try {
                 return new MimeMessage(null, new ByteArrayInputStream(dbData));
             } catch (MessagingException e) {
-                // TODO: log and throw custom exception
-                throw new RuntimeException(e);
+                String errorMessage = "Can`t convert byte array " + dbData + " to Mime Message";
+                LOG.error(errorMessage);
+                throw new MimeMessageConversionException(errorMessage, e);
             }
         }
         return null;

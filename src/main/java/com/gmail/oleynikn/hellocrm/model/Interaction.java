@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -22,6 +21,12 @@ import com.gmail.oleynikn.hellocrm.web.api.jsonview.Views;
 @Inheritance
 @DiscriminatorColumn(name = "TYPE")
 public class Interaction {
+
+    public static class Direction {
+        public static final String INBOUND = "INBOUND";
+        public static final String OUTBOUND = "OUTBOUND";
+    }
+
     @Id
     @GeneratedValue
     @JsonView(Views.ListView.class)
@@ -31,13 +36,13 @@ public class Interaction {
     @Column(name = "TYPE", insertable = false, updatable = false)
     private String interactionType;
 
-    // TODO:Add start date
-    @Transient // temporary
     @JsonView(Views.ListView.class)
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-    private Date created = new Date();
+    private Date created;
 
+    @JsonView(Views.ListView.class)
+    private String direction;
 
     @JsonView(Views.ListView.class)
     private String description;
@@ -49,12 +54,28 @@ public class Interaction {
     @JoinColumn(name = "client_id")
     private Client client;
 
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
     public String getDescription() {

@@ -12,18 +12,20 @@ import com.gmail.oleynikn.hellocrm.repository.ClientRepository;
 public class ClientService {
 
     private ClientRepository clientRepository;
+    private EmailMessageService emailService;
 
     @Autowired
-    public void setEmailService(ClientRepository clientRepository) {
+    public ClientService(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
+    }
+
+    @Autowired
+    public void setEmailService(EmailMessageService emailService) {
+        this.emailService = emailService;
     }
 
     public List<Client> findAll() {
         return clientRepository.findAll();
-    }
-
-  public Client save(Client client) {
-        return clientRepository.save(client);
     }
 
     public void deleteById(long id) {
@@ -34,6 +36,10 @@ public class ClientService {
         return clientRepository.findOne(id);
     }
 
+    public Client getOne(long id) {
+        return clientRepository.getOne(id);
+    }
+
     public List<Client> findByFirsOrLasttName(String firstName, String lastName) {
         return clientRepository.findByFirstNameOrLastNameAllIgnoreCase(firstName, lastName);
     }
@@ -42,4 +48,22 @@ public class ClientService {
         return clientRepository.findByEmail(address);
     }
 
+    public Client save(Client client) {
+        Client persistedClient = clientRepository.save(client);
+        linkEmails(persistedClient);
+        return persistedClient;
+    }
+
+    public Client update(Client client) {
+        Client persistedClient = clientRepository.getOne(client.getId());
+        persistedClient.updateFrom(client);
+        return persistedClient;
+    }
+
+    private void linkEmails(Client client) {
+        String clientEmail = client.getEmail();
+        if (null != clientEmail && clientEmail.length() > 6) {
+            emailService.setClientByAddress(client, clientEmail);
+        }
+    }
 }

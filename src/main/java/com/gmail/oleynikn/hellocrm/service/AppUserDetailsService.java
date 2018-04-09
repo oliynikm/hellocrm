@@ -16,8 +16,16 @@ import com.gmail.oleynikn.hellocrm.repository.UserRepository;
 
 @Component
 public class AppUserDetailsService implements UserDetailsService {
-    @Autowired
+
     private UserRepository userRepository;
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {

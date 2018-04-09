@@ -1,11 +1,5 @@
 package com.gmail.oleynikn.hellocrm.model;
 
-import java.io.IOException;
-
-import javax.mail.Address;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Part;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -20,8 +14,15 @@ import com.gmail.oleynikn.hellocrm.service.MimeMessageConverter;
 @DiscriminatorValue("EMAIL")
 public class EmailMessage extends Interaction {
 
-    // TODO: add MessageID unique
-    // TODO: check why MimeMessage different in insert and update statements
+    private String clientAddress;
+
+    @Column(unique = true)
+    private String messageId;
+    private String messageText;
+    private String messageTextType;
+    private String messageFrom;
+    private String messageTo;
+
     @JsonIgnore
     @Column(columnDefinition = "blob")
     @Convert(converter = MimeMessageConverter.class)
@@ -35,58 +36,56 @@ public class EmailMessage extends Interaction {
         this.message = message;
     }
 
+    public String getClientAddress() {
+        return clientAddress;
+    }
+
+    public void setClientAddress(String address) {
+        this.clientAddress = address;
+    }
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
+
     @JsonGetter("body")
-    public String getText() throws MessagingException, IOException {
-        if (message != null) {
-            return getText(message);
-        }
-        return "";
+    public String getMessageText() {
+        return messageText;
+    }
+
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
+    }
+
+    @JsonGetter("bodyType")
+    public String getMessageTextType() {
+        return messageTextType;
+    }
+
+    public void setMessageTextType(String messageTextType) {
+        this.messageTextType = messageTextType;
     }
 
     @JsonGetter("sender")
-    public Address getSender() throws MessagingException, IOException {
-        if (message != null) {
-            return message.getFrom()[0];
-        }
-        return null;
+    public String getMessageFrom() {
+        return messageFrom;
     }
 
-    private String getText(Part p) throws MessagingException, IOException {
+    public void setMessageFrom(String from) {
+        this.messageFrom = from;
+    }
 
-        if (p.isMimeType("text/*")) {
-            return (String) p.getContent();
-        }
+    @JsonGetter("recepient")
+    public String getMessageTo() {
+        return messageTo;
+    }
 
-        if (p.isMimeType("multipart/alternative")) {
-
-            Multipart multiPart = (Multipart) p.getContent();
-            String text = null;
-            for (int i = 0; i < multiPart.getCount(); i++) {
-
-                Part bodyPart = multiPart.getBodyPart(i);
-                if (bodyPart.isMimeType("text/plain")) {
-                    if (text == null) {
-                        text = getText(bodyPart);
-                    }
-                    continue;
-                } else if (bodyPart.isMimeType("text/html")) {
-                    String htmlText = getText(bodyPart);
-                    if (htmlText != null)
-                        return htmlText;
-                } else {
-                    return getText(bodyPart);
-                }
-            }
-            return text;
-        } else if (p.isMimeType("multipart/*")) {
-            Multipart mp = (Multipart) p.getContent();
-            for (int i = 0; i < mp.getCount(); i++) {
-                String partText = getText(mp.getBodyPart(i));
-                if (partText != null)
-                    return partText;
-            }
-        }
-        return null;
+    public void setMessageTo(String to) {
+        this.messageTo = to;
     }
 
     public void updateFrom(EmailMessage source) {

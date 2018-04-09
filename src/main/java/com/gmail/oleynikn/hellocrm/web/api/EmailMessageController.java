@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gmail.oleynikn.hellocrm.model.EmailMessage;
 import com.gmail.oleynikn.hellocrm.service.EmailMessageService;
 
+
 @RestController
 @RequestMapping("/api/emails")
 public class EmailMessageController {
     private final EmailMessageService emailService;
+    private static final Logger log = Logger.getLogger(EmailMessageController.class.getName());
 
     @Autowired
     public EmailMessageController(EmailMessageService emailService) {
@@ -43,13 +46,12 @@ public class EmailMessageController {
 
     @PostMapping("/{id}")
     public EmailMessage save(@RequestBody EmailMessage message) {
-        EmailMessage persistedMessage = emailService.findOne(message.getId());
-        persistedMessage.updateFrom(message);
-        return persistedMessage;
+        return emailService.update(message);
     }
 
     @GetMapping("/unassigned")
     public List<EmailMessage> getEmailsWithoutClient() {
+        log.info("call get unassigned messages ws");
         return emailService.findByClientId(null);
     }
 

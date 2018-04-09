@@ -2,6 +2,7 @@ package com.gmail.oleynikn.hellocrm.model;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -23,24 +24,14 @@ public class Client {
     private String lastName;
     @NotNull
     private String firstName;
+    @NotNull
     @Email
+    @Column(unique = true)
     private String email;
 
     @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Interaction> interactions;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "client")
-    private List<EmailAddress> emailAddresses;
-
-    public List<EmailAddress> getEmailAddresses() {
-        return emailAddresses;
-    }
-
-    public void setEmailAddresses(List<EmailAddress> emailAddresses) {
-        this.emailAddresses = emailAddresses;
-    }
 
     public Long getId() {
         return id;
@@ -83,7 +74,7 @@ public class Client {
     }
 
     public void updateFrom(Client source) {
-        this.email = source.getEmail();
+        // this.email = source.getEmail(); do not update email directly
         this.firstName = source.getFirstName();
         this.lastName = source.getLastName();
     }
