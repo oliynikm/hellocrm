@@ -2,6 +2,8 @@ package com.gmail.oleynikn.hellocrm.service.mailbox;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -47,9 +49,12 @@ public class MimeMessageService {
     }
 
     public List<EmailMessage> saveInboundMessages(Message... messages) throws MessagingException, IOException {
-        List<EmailMessage> emails = new ArrayList<>();
+        List<EmailMessage> newEmails = new ArrayList<>();
 
-        for (Message message : messages) {
+        List<Message> receivedMessages = Arrays.asList(messages);
+        Collections.reverse(receivedMessages);
+
+        for (Message message : receivedMessages) {
             MimeMessage mimeMessage = (MimeMessage) message;
             EmailMessage email = createEmailMessageFrom(mimeMessage);
             email.setDirection(Interaction.Direction.INBOUND);
@@ -62,12 +67,13 @@ public class MimeMessageService {
             email.setState("New");
 
             try {
-                emails.add(emailService.save(email));
+                newEmails.add(emailService.save(email));
             } catch (MessageDuplicationException e) {
                 LOG.error("Error while saving email", e);
+                break;
             }
         }
-        return emails;
+        return newEmails;
     }
 
 
