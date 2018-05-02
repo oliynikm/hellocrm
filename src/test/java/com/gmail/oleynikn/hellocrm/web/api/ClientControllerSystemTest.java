@@ -39,8 +39,8 @@ public class ClientControllerSystemTest {
             .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
             .andExpect(content().string(allOf(
-                        containsString("\"lastName\":\"doe\""),
-                        containsString("\"firstName\":\"john\"")))
+                        containsString("\"lastName\":\"Doe\""),
+                        containsString("\"firstName\":\"John\"")))
             );
     }
 
