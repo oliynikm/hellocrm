@@ -4,7 +4,9 @@ reports/
 src/main/resources/db/dev/V102__db_sample_mailboxes.sql
 src/main/resources/static/ngapp/
 target/
-!.mvn/wrapper/maven-wrapper.jar
+.mvn/
+mvn
+mvn.cmd
 
 ### STS ###
 .apt_generated
