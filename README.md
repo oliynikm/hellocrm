@@ -8,3 +8,4 @@ Spring (Boot, Data, Security)
 JavaMail
 
 Here is [UI part](https://github.com/oliynikm/hellocrmng)
+See demo at hellocrm.ml
